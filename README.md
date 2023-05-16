@@ -60,9 +60,9 @@ PTASession在气球网页界面F12查看cookies可以看到
 
 source文件夹内的`GUI.cpp`是`PTA气球打印.exe`的C++源代码，用到了EGE的图像处理库，可以修改cpp文件并重新编译以修改气球小票的打印格式。`No_GUI.cpp`则没有用到图像库，可以直接编译。
 
-# `print_info`文件夹下的`printer.txt`的文件格式
+## `print_info`文件夹下的`printer.txt`的文件格式
 
-### 格式如下：
+#### 格式如下：
 
 文件的第一行是字符串  `BALLOON_STATUS` 用于标记文件是否是合法的
 
