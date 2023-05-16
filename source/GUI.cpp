@@ -97,15 +97,18 @@ void clean_screen(){
 }
 
 //Printer Part!
-void Print_Balloon(){//打印机开始打印 
-	ShellExecuteA(NULL,"print","print.txt","",".",0);//无阻塞运行 
+void Print_Balloon(string pid){//打印机开始打印 
+	if(pid == "test") pid="print_log\\print.txt";
+	else pid = "print_log\\print_" + pid + ".txt";
+	ShellExecuteA(NULL,"print",pid.c_str(),"",".",0);//无阻塞运行 
 	cout<<"Printed.\n";
-	
 	return ;
 }
 void Load_Printer(Balloon p){//把气球写入print.txt 
 	ofstream fout;
-	fout.open("print.txt");
+	string pid = p.pid;
+	pid = "print_log\\print_" + pid + ".txt";
+	fout.open(pid.c_str());
 	fout<<"\n----气球打印小票----\n";
 	fout<<"队伍名称:"<<p.name<<"\n";
 	fout<<"通过题目:"<<p.problem<<"\n";
@@ -126,7 +129,7 @@ void Get_Printer(){//获取气球打印列表
 	system("python get_balloon.py");
 	Sleep(1000);
 	ifstream fin;
-	fin.open("print_info/printer.txt");
+	fin.open("print_info\\printer.txt");
 	
 	char info[MAX_LEN];
 	string balloon;
@@ -223,7 +226,7 @@ void Working(){
 			setcolor(EGERGB(0x66,0xcc,0xff));//输出总计打印数 
 			//绘制信息界面------ 
 			Load_Printer(balloons[i]);
-			Print_Balloon();
+			Print_Balloon(balloons[i].pid);
 			
 			delay_stop(100);//每次打印都等待1s,避免出现之前的一次性出太快来不及暂停修bug的情况 
 			
@@ -254,11 +257,11 @@ void Working(){
 
 void Test_Printer(){
 	ofstream fout;
-	fout.open("print.txt");
+	fout.open("print_log\\print.txt");
 	fout<<"测试信息\n如果你能看见这段话\n说明打印机已经\n成功安装并连接\nOvO可以正常开始\n运行程序";
 	fout.close();
 	Sleep(500);
-	Print_Balloon();
+	Print_Balloon("test");
 	Sleep(500);
 	return ;
 }
