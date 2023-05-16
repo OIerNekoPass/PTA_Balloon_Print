@@ -37,7 +37,7 @@ for balloon in msg["distributions"]:
 	str_str = "\n"+msg["problemSetProblemById"][balloon["problemSetProblemId"]]["label"]
 	file.write(str_str.encode('UTF-8',errors='ignore').decode('UTF-8',errors='ignore'))
 	#ballooncolor
-	str_str = "\n"+msg["balloonByProblemSetProblemId"][balloon["problemSetProblemId"]]["color"]
+	str_str = "\n"+msg["balloonByProblemSetProblemId"][balloon["problemSetProblemId"]]["color"] # 记得设置问题气球颜色，否则key error
 	file.write(str_str.encode('UTF-8',errors='ignore').decode('UTF-8',errors='ignore'))
 	#firstsolve
 	str_str = "\n"+str(balloon["problemSetProblemFirstObtained"])
@@ -54,11 +54,9 @@ file.close()
 
 #确认派送完成
 deliver_url = "https://pintia.cn/api/xcpc/distributions?problem_set_id="+problem_set_id
-for balloon in msg["distributions"]:
-	distributionIds = balloon["id"]
-	# print(distributionIds)
+if msg["distributions"] != []:
 	data = {
-		"distributionIds":[distributionIds],
+		"distributionIds":[balloon["id"] for balloon in msg["distributions"]],
 		"delivered":True
 	}
 	resp = requests.put(deliver_url, data=json.dumps(data), headers=header,cookies=cookie) # 注意是put
